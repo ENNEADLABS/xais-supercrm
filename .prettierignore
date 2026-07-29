@@ -1,0 +1,14 @@
+node_modules
+.next
+coverage
+reference-crm
+analysis
+blueprint
+specs
+docs
+.claude
+CLAUDE.md
+README.md
+pnpm-lock.yaml
+# Sortie brute de `supabase gen types` (regeneree par pnpm db:types, non formatee)
+src/types/database.generated.ts

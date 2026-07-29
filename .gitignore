@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+dist/
+build/
+
+# Environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Supabase
+.supabase/
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.vitest/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Reference CRM (repos clones, trop volumineux pour git)
+reference-crm/
+
+# Claude Code
+.claude/
+.claude/snapshots/
+.claude/agent-memory/
+.claude/settings.local.json
+.claude/handoff.md
+.claude/handoff-history/
+specs/
+
+# Sentry
+.sentryclirc
+
+# Claude Code config locale
+.mcp.json
