@@ -25,6 +25,7 @@ produit, modèle de domaine) vit dans [`../../blueprint/`](../../blueprint/) ; l
 | 0008 | Stratégie de tests RLS / isolation multi-tenant (Vitest+JWT)   | Accepté  |
 | 0009 | Bascule vers `supabase/migrations/` (source de vérité)         | Accepté  |
 | 0010 | Content Studio : modèle d'intégration hybride CRM + éditorial  | Accepté  |
+| 0011 | Auth des bots API par JWT robot et secret legacy Supabase      | Accepté  |
 
 ## Créer un nouvel ADR
 

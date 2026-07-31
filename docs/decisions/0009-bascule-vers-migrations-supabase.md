@@ -67,3 +67,10 @@ On y est : on prépare le déploiement. Trois constats ont déclenché la bascul
   - L'automatisation CI du `db push` et le lien prod restent à faire (hors périmètre).
 - À revisiter si : on lie le projet prod (câbler le job CI `db push` + secrets), ou
   si l'on veut revenir à un schéma déclaratif quand l'outillage Supabase le gérera.
+
+## Amendement 2026-07-31 — régénération des types rendue sûre
+
+Le footgun décrit ci-dessus est résolu : `pnpm db:types` écrit désormais dans
+`src/types/database.generated.ts`. Le fichier manuel `src/types/database.ts`
+réexporte le généré et conserve les alias de domaine ; il n'est plus écrasé par
+la régénération.
