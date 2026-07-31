@@ -38,25 +38,42 @@ de production éditoriale, sous un cockpit dirigeant — **multi-tenant dès le 
 
 ### Prérequis
 
-- Node.js 22+
+- Node.js 22.16+ (`nvm use` lit le fichier `.nvmrc`)
 - **pnpm 10.14.0** (le repo est standardisé sur pnpm — `corepack enable` recommandé)
-- [Supabase CLI](https://supabase.com/docs/guides/cli) (`npx supabase`) + Docker pour la DB locale
+- [Docker](https://docs.docker.com/get-docker/) démarré pour la base locale
+- Supabase CLI **2.98.2**, invoquée via `npx` par les commandes ci-dessous
 
 ### Installation
 
 ```bash
-pnpm install
-cp .env.example .env.local   # puis renseigner les valeurs (voir ci-dessous)
+corepack enable
+pnpm install --frozen-lockfile
+cp .env.example .env.local
 ```
 
 ### Base de données locale
 
 ```bash
-npx supabase start                # démarre Postgres + services Supabase locaux
-pnpm run db:reset                 # rejoue supabase/migrations/ + seed.sql
-pnpm run db:dump                  # régénère supabase/schema.sql (dump lecture seule)
-pnpm run db:types                 # régénère src/types/database.generated.ts depuis le schéma
+npx supabase@2.98.2 start          # démarre Postgres + services Supabase locaux
+npx supabase@2.98.2 status -o env  # affiche URL et clés de la stack locale
+pnpm run db:reset                  # rejoue migrations/ + seed.sql
 ```
+
+Reporte `API_URL` et `ANON_KEY` affichés par `status -o env` dans
+`NEXT_PUBLIC_SUPABASE_URL` et `NEXT_PUBLIC_SUPABASE_ANON_KEY` de `.env.local`.
+
+### Premier compte local
+
+1. Ouvre Supabase Studio à l'URL affichée par `supabase start` (habituellement
+   `http://127.0.0.1:54323`).
+2. Dans **Authentication → Users**, crée un utilisateur avec un email et un mot
+   de passe, puis marque-le comme confirmé.
+3. Lance `pnpm run dev`, ouvre `http://localhost:3000`, connecte-toi et termine
+   l'assistant d'onboarding.
+
+Le trigger `handle_new_user()` crée automatiquement l'organisation et le rôle
+administrateur du nouveau compte. Attention : `pnpm run db:reset` détruit la base
+locale, comptes Auth compris ; crée donc le compte **après le dernier reset**.
 
 > Les types DB vivent dans deux fichiers : `src/types/database.generated.ts` (sortie
 > brute de `supabase gen types`, régénérée par `db:types`, ne pas éditer) et
@@ -64,10 +81,9 @@ pnpm run db:types                 # régénère src/types/database.generated.ts 
 > alias de domaine maintenus à la main).
 
 > La source de vérité du schéma est `supabase/migrations/` (ADR-0009). Un nouveau
-> changement = `npx supabase migration new <nom>`, puis `pnpm db:reset`.
->
-> ⚠️ Le seed rattache l'org de démo au premier user auth existant (sinon il l'ignore
-> proprement). Crée un user via le dashboard local puis relance `db:reset` au besoin.
+> changement = `npx supabase@2.98.2 migration new <nom>`, puis `pnpm db:reset`.
+> La CLI reste volontairement épinglée : une montée de version doit être validée
+> avec les tests d'intégration RLS avant de modifier ce numéro et la CI.
 
 ### Lancer l'app
 
@@ -81,15 +97,19 @@ pnpm run dev                      # http://localhost:3000
 
 Voir `.env.example` pour la liste complète. Les principales :
 
-| Variable                          | Rôle                                              |
-| --------------------------------- | ------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`        | URL du projet Supabase                            |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY`   | Clé anon publique                                 |
-| `EMAIL_ENCRYPTION_KEY`            | Clé hex AES-256 (chiffrement des tokens email)    |
-| `GOOGLE_CLIENT_ID` / `_SECRET`    | OAuth Gmail (sync + envoi)                         |
-| `GOOGLE_OAUTH_REDIRECT_URI`       | Callback OAuth Gmail                              |
-| `NEXT_PUBLIC_SENTRY_DSN`          | Monitoring (optionnel en dev)                     |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | Rate limiting prod (in-memory en fallback)      |
+| Variable | Requise pour | Rôle |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Application | URL Supabase locale ou distante |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Application | Clé anon/publishable utilisée par les clients |
+| `SUPABASE_SERVICE_ROLE_KEY` | API bot | Provisionnement des comptes robot ; serveur uniquement |
+| `SUPABASE_JWT_SECRET` | API bot | Signature des JWT robot legacy ; serveur uniquement |
+| `ALLOWED_EMAILS` | Optionnel | Allowlist d'accès séparée par des virgules ; vide = désactivée |
+| `EMAIL_ENCRYPTION_KEY` | Synchronisation email | Clé hex AES-256 pour les tokens email |
+| `GOOGLE_CLIENT_ID` / `_SECRET` | Gmail | OAuth Gmail (sync + envoi) |
+| `GOOGLE_OAUTH_REDIRECT_URI` | Gmail | Callback OAuth Gmail |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | Production | Rate limiting partagé ; mémoire locale en fallback |
+| `NEXT_PUBLIC_SENTRY_DSN` | Optionnel | Collecte Sentry |
+| `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Build Sentry | Upload des source maps |
 
 > **Jamais** committer `.env.local` ni de secret en clair. `.env*` est gitignoré.
 
@@ -104,12 +124,23 @@ pnpm run lint             # ESLint + Prettier check
 pnpm run format           # Prettier --write
 pnpm run typecheck        # tsc --noEmit
 pnpm run test             # Vitest run
+pnpm run check            # lint + typecheck + tests unitaires
 pnpm run test:watch       # Vitest watch
 pnpm run test:coverage    # Vitest + couverture
 pnpm run db:reset         # reset DB locale (rejoue migrations/ + seed.sql)
 pnpm run db:types         # régénère src/types/database.generated.ts
 pnpm run test:integration # tests d'intégration RLS (stack Supabase locale)
 ```
+
+### Dépannage rapide
+
+- `supabase start` échoue : vérifie que Docker est démarré et dispose d'assez de mémoire.
+- L'application redirige vers `/login` : vérifie les deux variables Supabase et recrée
+  le compte si un `db:reset` a été exécuté.
+- Une fonctionnalité email, bot, Upstash ou Sentry échoue : complète uniquement le
+  groupe optionnel correspondant dans `.env.local`.
+- Avant une PR, lance `pnpm run check`; ajoute `pnpm run test:integration` si tu touches
+  aux migrations, à Supabase ou aux règles RLS.
 
 ---
 

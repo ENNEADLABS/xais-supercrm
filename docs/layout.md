@@ -45,7 +45,7 @@ Chaque domaine métier suit le même gabarit. Colonnes = couches, lignes = domai
 | Documents   | `app/(app)/documents/`     | `components/documents/`, `crm/DocumentList` | `useDocuments` | `actions/document`    | `documentService`                        |
 | Dashboard   | `app/(app)/dashboard/`     | `components/dashboard/`          | `useDashboard`        | `actions/dashboard`   | `dashboardService`, `dashboard/*`        |
 | Settings    | `app/(app)/settings/`      | `components/settings/`           | `useTenantConfig`, `useMembers`, `useOrganization`, `useTrash` | `actions/settings`, `actions/tenantConfig`, `actions/trash` | `tenantConfigService`, `memberService`, `organizationService`, `trashService` |
-| Onboarding  | `app/(app)/onboarding/`    | `components/onboarding/`         | —                     | `actions/settings`    | `tenantConfigService`                    |
+| Onboarding  | `app/(onboarding)/onboarding/` | `components/onboarding/`      | —                     | `actions/settings`    | `tenantConfigService`                    |
 | Recherche   | (palette globale)          | `components/search/CommandPalette`  | `useGlobalSearch`     | `actions/search`      | `searchService`                          |
 | CSV         | (dialogs intégrés)         | `components/csv/`                | —                     | `actions/csv` + `app/api/import` | `csvService`                    |
 
