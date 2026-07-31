@@ -149,6 +149,25 @@ export async function addInvoiceLineAction(invoiceId: string, input: CreateInvoi
   return line;
 }
 
+// --- Ajout depuis un produit ---
+
+export async function addInvoiceLineFromProductAction(
+  invoiceId: string,
+  productId: string,
+  quantity: number,
+) {
+  const { organizationId } = await requireMember();
+  const line = await invoiceLineService.addFromProduct(
+    organizationId,
+    invoiceId,
+    productId,
+    quantity,
+  );
+  revalidatePath("/invoices");
+  revalidatePath(`/invoices/${invoiceId}`);
+  return line;
+}
+
 // --- Mise a jour d'une ligne ---
 
 export async function updateInvoiceLineAction(
