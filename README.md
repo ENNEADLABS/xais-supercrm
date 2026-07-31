@@ -2,18 +2,22 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-SaaS pour créateurs et PME françaises : un **CRM complet** + un **Content Studio**
-de production éditoriale, sous un cockpit dirigeant — **multi-tenant dès le jour 0**.
+Snapshot pédagogique d'un CRM + Content Studio pour créateurs et PME françaises,
+construit comme un SaaS **multi-tenant dès le jour 0**. Le code provient d'un
+prototype auparavant utilisé dans un dépôt privé ; ce dépôt public sert avant tout
+de support d'apprentissage et d'exploration.
 
 - **CRM** : contacts, sociétés, opportunités (pipeline kanban), devis, factures,
-  paiements, emails multi-boîtes, documents (GED), tâches et activité.
+  paiements, emails Gmail multi-boîtes, documents (GED), tâches et activité.
 - **Content Studio** : idées, contenus, scripts, assets, livrables, calendrier ;
   **cockpit quotidien** (à produire cette semaine / à valider / bloqués / en retard),
   **templates** réutilisables, **signaux de blocage** + validation, **publications**
   par canal.
 
-> **Statut** : CRM + Content Studio (V1 & V1.5) livrés sous forme de prototype
-> hors ligne ; aucun trafic réel.
+> **Statut** : snapshot éducatif non déployé et sans maintenance active garantie.
+> Gmail est implémenté ; Microsoft et IMAP/SMTP restent des stubs. Le projet n'est
+> pas présenté comme prêt pour la production : réévalue les dépendances, la sécurité,
+> les sauvegardes et l'exploitation avant tout déploiement réel.
 
 ---
 
@@ -46,10 +50,15 @@ de production éditoriale, sous un cockpit dirigeant — **multi-tenant dès le 
 ### Installation
 
 ```bash
+git clone https://github.com/ENNEADLABS/xais-supercrm.git
+cd xais-supercrm
 corepack enable
 pnpm install --frozen-lockfile
 cp .env.example .env.local
 ```
+
+Le nom du dépôt est historique ; l'application et le package s'appellent désormais
+**ENNEAD Studio Creator**.
 
 ### Base de données locale
 
@@ -128,6 +137,7 @@ pnpm run check            # lint + typecheck + tests unitaires
 pnpm run test:watch       # Vitest watch
 pnpm run test:coverage    # Vitest + couverture
 pnpm run db:reset         # reset DB locale (rejoue migrations/ + seed.sql)
+pnpm run db:dump          # régénère le dump de lecture supabase/schema.sql
 pnpm run db:types         # régénère src/types/database.generated.ts
 pnpm run test:integration # tests d'intégration RLS (stack Supabase locale)
 ```
@@ -166,7 +176,8 @@ Page (RSC mince)  →  Composant "use client"  →  hook useX (TanStack Query)
 
 📂 Carte détaillée du repo : [`docs/layout.md`](docs/layout.md)
 🏛️ Décisions d'architecture (le *pourquoi*) : [`docs/decisions/`](docs/decisions/)
-📐 Vision produit & domaine (le *quoi*) : [`blueprint/`](blueprint/)
+📐 Intentions produit historiques : [`blueprint/`](blueprint/)
+🤖 Contrat de l'API bot expérimentale : [`docs/api-v1.md`](docs/api-v1.md)
 
 ---
 
@@ -185,9 +196,9 @@ Pattern AAA, factories plutôt que fixtures.
   RLS admin/member/viewer, cross-org) et fonctions transactionnelles PostgreSQL
   contre une vraie DB locale, via `vitest.integration.config.ts`.
 
-> **Lacunes connues** : pas encore d'E2E. Quelques tests de transitions valident
-> une copie locale de la logique plutôt que le service réel — à migrer vers
-> l'intégration.
+> **Lacunes connues** : pas encore d'E2E. La couverture porte sur tout `src/` mais
+> aucun seuil bloquant n'est imposé : le rapport sert à rendre les zones non testées
+> visibles.
 
 ---
 
@@ -196,7 +207,8 @@ Pattern AAA, factories plutôt que fixtures.
 Le snapshot public n’est pas déployé. Il reste compatible avec Vercel pour le
 front et les routes API, ainsi qu’avec Supabase pour la base de données.
 
-CI (`.github/workflows/ci.yml`) : lint + typecheck + test + build sur chaque PR.
+CI (`.github/workflows/ci.yml`) : scan de secrets, lint, typecheck, tests unitaires,
+build et tests d'intégration Supabase/RLS sur chaque PR.
 
 ---
 
@@ -208,7 +220,7 @@ src/
   components/     # ui/ (shadcn) + un dossier par domaine
   lib/
     actions/      # Server Actions (auth + Zod + revalidate)
-    services/     # logique métier (≤200 lignes/fichier)
+    services/     # logique métier et accès Supabase par domaine
     hooks/        # wrappers TanStack Query
     schemas/      # schémas Zod partagés
     supabase/     # clients browser/server + soft-delete
@@ -218,7 +230,8 @@ src/
   types/          # database.generated.ts (généré) + database.ts (entrée + alias)
 supabase/         # migrations/ (source de vérité), schema.sql (dump), seed.sql
 tests/            # Vitest : unitaires + integration/ (RLS multi-tenant)
-blueprint/        # vision produit & décisions d'architecture (lecture)
+blueprint/        # recherches et intentions historiques (pas une source canonique)
+analysis/         # analyses historiques de CRM open source
 docs/             # layout.md + decisions/ (ADR)
 ```
 
@@ -227,6 +240,14 @@ docs/             # layout.md + decisions/ (ADR)
 En bref : tables `plural_snake_case`, colonnes `snake_case`, types TS `PascalCase`,
 code en anglais, commentaires en français, commits conventionnels
 (`feat(crm):`, `fix(quotes):`…).
+
+## Support et contribution
+
+Ce dépôt est fourni **tel quel**, pour apprendre. Les issues et pull requests sont
+bienvenues, mais leur traitement n'est soumis à aucun délai. Consulte
+[`CONTRIBUTING.md`](CONTRIBUTING.md) avant de proposer un changement et
+[`.github/SECURITY.md`](.github/SECURITY.md) pour signaler une vulnérabilité sans
+l'exposer publiquement.
 
 ## Licence
 

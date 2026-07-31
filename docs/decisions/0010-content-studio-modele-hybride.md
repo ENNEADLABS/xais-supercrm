@@ -67,3 +67,10 @@ vérité (ADR-0009).
     vitest) — cf. `docs/content-studio.md`.
 - À revisiter si : on veut lier structurellement contenus ↔ CRM (deals/contacts),
   ou si l'enum `entity_type` devient trop large (envisager une table de typage).
+
+## Amendement 2026-06-15 — extension V1.5
+
+La migration `20260615150000_content_studio_v15.sql` a livré une partie du périmètre
+initialement différé : cockpit quotidien, templates réutilisables et vue Publications.
+Les campagnes structurées, les liens contenu ↔ CRM et les automatisations restent hors
+périmètre.

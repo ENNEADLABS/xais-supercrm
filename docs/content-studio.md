@@ -8,25 +8,35 @@
 ## Accès
 
 - Entrée **Studio** (icône clap) dans la sidebar, ou `/studio`.
-- `/studio` redirige vers le **board éditorial** (`/studio/board`).
-- Accès rapide depuis le board : boutons **Idées** et **Calendrier**.
+- `/studio` ouvre le **cockpit quotidien**.
+- Le cockpit donne accès au board, aux idées, au calendrier, aux templates et
+  aux publications.
 
 ## Routes
 
 | Route                     | Écran                                  |
 | ------------------------- | -------------------------------------- |
-| `/studio`                 | Redirige vers le board                 |
+| `/studio`                 | Cockpit quotidien                      |
 | `/studio/board`           | Kanban éditorial (9 colonnes)          |
 | `/studio/ideas`           | Liste des idées                        |
 | `/studio/ideas/new`       | Création d'une idée                    |
 | `/studio/content/[id]`    | Fiche détaillée d'un contenu           |
 | `/studio/calendar`        | Calendrier éditorial mensuel           |
+| `/studio/templates`       | Liste des templates                    |
+| `/studio/templates/new`   | Création d'un template                 |
+| `/studio/templates/[id]`  | Édition d'un template                  |
+| `/studio/publications`    | Livrables groupés par canal et semaine |
 
 ---
 
 ## Fonctionnalités
 
-### 1. Idées — `/studio/ideas`
+### 1. Cockpit — `/studio`
+
+Quatre listes opérationnelles dérivées des contenus, assets, checklists et tâches :
+contenus en retard, à valider, à produire cette semaine et bloqués.
+
+### 2. Idées — `/studio/ideas`
 
 Capturer une intention avant de produire.
 
@@ -38,7 +48,7 @@ Capturer une intention avant de produire.
   `archivée` (elle a accompli son rôle).
 - **Supprimer** : icône corbeille (réservé admin).
 
-### 2. Kanban éditorial — `/studio/board`
+### 3. Kanban éditorial — `/studio/board`
 
 Vue centrale de production.
 
@@ -52,7 +62,7 @@ Vue centrale de production.
 - **Carte** : titre (→ fiche), format, priorité (couleur), date planifiée
   (rouge si en retard), **barre d'avancement de la checklist**.
 
-### 3. Fiche contenu — `/studio/content/[id]`
+### 4. Fiche contenu — `/studio/content/[id]`
 
 En-tête : titre, format, priorité, date + **sélecteur de statut** (changer le
 statut sans passer par le board). 7 onglets :
@@ -72,15 +82,27 @@ statut sans passer par le board). 7 onglets :
 - **Tâches** : module Tasks réutilisé (créer/compléter/supprimer).
 - **Documents** : GED rattachée au contenu (téléverser ici, puis référençable
   comme asset).
-- **Activité** : journal automatique de chaque mutation, avec l'auteur.
+- **Activité** : journal des principales mutations métier, avec l'auteur.
 
-### 4. Calendrier éditorial — `/studio/calendar`
+### 5. Calendrier éditorial — `/studio/calendar`
 
 - Grille mensuelle, navigation mois précédent/suivant, jour courant surligné.
 - Affiche tout ce qui a une **date planifiée** : contenus (pastille pleine) et
   livrables (préfixe `↳`).
 - **Retards** en rouge (date passée, statut ni publié ni archivé).
 - Clic sur une entrée → fiche du contenu.
+
+### 6. Templates — `/studio/templates`
+
+- CRUD de gabarits réutilisables : format, priorité, cible, squelette de script,
+  checklist et livrables attendus.
+- Création d'un contenu depuis un template avec préremplissage transactionnel du
+  script, de la checklist et des livrables.
+
+### 7. Publications — `/studio/publications`
+
+- Livrables regroupés par canal puis par semaine.
+- Affichage du statut, des retards, du contenu parent et du lien publié lorsqu'il existe.
 
 ---
 
@@ -93,14 +115,16 @@ statut sans passer par le board). 7 onglets :
 | `viewer` | Lecture seule (écritures bloquées côté serveur).                   |
 
 Isolation multi-tenant par `organization_id` sur chaque table (RLS + filtre
-applicatif). Chaque mutation est journalisée dans l'activité avec son auteur.
+applicatif). Les mutations métier principales alimentent le journal d'activité ;
+les changements techniques fins, comme chaque case de checklist, ne sont pas tous
+journalisés individuellement.
 
 ## Modèle de données
 
 Tables dédiées : `content_ideas`, `content_pieces`, `content_scripts`,
-`deliverables`, `content_assets`, `content_checklist_items`. L'enum partagé
-`entity_type` est étendu (`content_idea`, `content_piece`, `deliverable`) pour
-brancher tâches/documents/activités sans modifier leur schéma.
+`deliverables`, `content_assets`, `content_checklist_items`, `content_templates`.
+L'enum partagé `entity_type` est étendu (`content_idea`, `content_piece`,
+`deliverable`) pour brancher tâches/documents/activités sans modifier leur schéma.
 
 ## Flux type
 

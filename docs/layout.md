@@ -44,6 +44,7 @@ Chaque domaine métier suit le même gabarit. Colonnes = couches, lignes = domai
 | Tâches      | `app/(app)/tasks/`         | `components/tasks/`              | `useTasks`            | `actions/task`        | `taskService`                            |
 | Documents   | `app/(app)/documents/`     | `components/documents/`, `crm/DocumentList` | `useDocuments` | `actions/document`    | `documentService`                        |
 | Dashboard   | `app/(app)/dashboard/`     | `components/dashboard/`          | `useDashboard`        | `actions/dashboard`   | `dashboardService`, `dashboard/*`        |
+| Content Studio | `app/(app)/studio/`     | `components/studio/`             | `useContent*`, `useDeliverables` | `actions/content` | `content*Service`, `deliverableService` |
 | Settings    | `app/(app)/settings/`      | `components/settings/`           | `useTenantConfig`, `useMembers`, `useOrganization`, `useTrash` | `actions/settings`, `actions/tenantConfig`, `actions/trash` | `tenantConfigService`, `memberService`, `organizationService`, `trashService` |
 | Onboarding  | `app/(onboarding)/onboarding/` | `components/onboarding/`      | —                     | `actions/settings`    | `tenantConfigService`                    |
 | Recherche   | (palette globale)          | `components/search/CommandPalette`  | `useGlobalSearch`     | `actions/search`      | `searchService`                          |
@@ -62,10 +63,11 @@ Transverses (sans page propre) : `notes`, `tags`, `activities` → `noteService`
 | `src/lib/actions/helpers.ts`             | `getAuthContext` / `requireMember` / `requireAdmin`           |
 | `src/lib/supabase/{server,client,middleware}.ts` | Clients Supabase (SSR / browser / middleware)        |
 | `src/lib/supabase/softDelete.ts`         | Helper soft-delete + allowlist des tables soft-deletables     |
-| `src/lib/services/activityService.ts`    | Log d'audit appelé après chaque mutation                      |
+| `src/lib/services/activityService.ts`    | Journal d'activité appelé par les mutations métier principales |
 | `src/lib/services/tenantConfigService.ts`| Config JSONB par tenant (pipeline, prefixes, TVA, devise)     |
 | `src/lib/utils/{format,encryption,rate-limit,sanitize,csv}.ts` | Utilitaires transverses                  |
-| `src/types/database.ts`                  | **Généré** (`db:types`) — ne pas éditer à la main             |
+| `src/types/database.generated.ts`        | Sortie générée par `db:types` — ne pas éditer à la main       |
+| `src/types/database.ts`                  | Point d'entrée manuel : ré-export du généré + alias de domaine |
 | `src/components/crm/`                    | Briques UI réutilisées par tous les domaines (NoteList, ActivityTimeline, TagSelector, EmptyState, DocumentList…) |
 | `src/components/ui/`                     | Primitives shadcn/ui (`base-nova` / `@base-ui/react`)         |
 
@@ -99,6 +101,9 @@ Transverses (sans page propre) : `notes`, `tags`, `activities` → `noteService`
   assemblés dans `PdfDocument`, rendus en buffer via les routes `app/api/*/pdf`.
 - **Dashboard** (`lib/services/dashboard/`) : `dashboardService` (stats temps réel)
   + `trendQueries` (séries temporelles par période) + helpers de dates.
+- **API bot** (`app/api/v1/` + `lib/utils/apiAuth`) : surface expérimentale
+  authentifiée par clé, isolée par tenant. Contrat et exemples dans
+  [`api-v1.md`](api-v1.md).
 
 ---
 
@@ -106,7 +111,7 @@ Transverses (sans page propre) : `notes`, `tags`, `activities` → `noteService`
 
 | Dossier            | Contenu                                                        |
 | ------------------ | ------------------------------------------------------------- |
-| `blueprint/`       | Vision produit & domaine (lecture) — le *quoi*               |
+| `blueprint/`       | Intentions et recherches historiques — non canoniques        |
 | `docs/decisions/`  | ADR (MADR) — le *pourquoi* daté                              |
-| `analysis/`        | Analyses des CRM open-source de référence (lecture)          |
+| `analysis/`        | Analyses historiques de CRM open source — non canoniques     |
 | `reference-crm/`   | Repos CRM clonés (gitignoré, hors repo)                      |

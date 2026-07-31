@@ -1,6 +1,6 @@
 -- ============================================================================
 -- ENNEAD Studio Creator — Donnees de demo
--- Applique apres schema.sql + rls.sql
+-- Applique apres les migrations par `supabase db reset`
 -- Utilise service_role (bypass RLS)
 -- ============================================================================
 

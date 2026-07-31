@@ -1,8 +1,14 @@
 # Security Policy
 
-## Supported version
+## Supported versions
 
-Security fixes are applied to the latest revision of the default branch.
+No version is actively supported or operated as a service. This repository is an
+educational snapshot provided as-is. Reports are reviewed and fixes may be applied
+on a best-effort basis, without a response-time or release guarantee.
+
+Before deploying a fork, review the open Dependabot alerts, run `pnpm audit`, rotate
+all environment-specific credentials, and perform a security assessment for your
+own threat model.
 
 ## Reporting a vulnerability
 
@@ -17,5 +23,4 @@ Use GitHub's private vulnerability reporting flow:
 3. Choose **Report a vulnerability**.
 
 Include the affected component, reproduction steps, impact, and any suggested
-mitigation. The maintainers will acknowledge the report and coordinate
-disclosure after a fix is available.
+mitigation. Do not include real credentials or personal data in the report.

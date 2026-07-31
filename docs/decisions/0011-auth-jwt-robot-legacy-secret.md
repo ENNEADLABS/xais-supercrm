@@ -55,6 +55,10 @@ renvoyé au client, expiration 5 min, algorithme HS256 épinglé dans le code.
 
 ## Amendement 2026-07-04 — constat prod : la migration signing keys ne casse pas le flux
 
+> Ce constat concerne l'ancien environnement privé dont ce snapshot public est issu.
+> Le dépôt public n'est relié à aucun environnement de production et ne fournit aucun
+> secret ni identifiant de ce déploiement historique.
+
 Le projet Supabase prod a **déjà migré** vers les JWT Signing Keys (current
 key asymétrique + « previously used key » = legacy secret importé dans le
 keyring). Contrairement à la crainte formulée dans les Conséquences

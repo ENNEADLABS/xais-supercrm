@@ -263,9 +263,11 @@ Zustand (useStore)
 
 ### Pattern composants
 
-**Decision : shadcn/ui + Tailwind CSS v4 + Radix UI.**
+**Décision actuelle : shadcn/ui `base-nova` + Tailwind CSS v4 + Base UI.**
 
-Valide par Atomic CRM qui utilise exactement cette stack. Les composants shadcn sont copies dans le projet (`src/components/ui/`) et mutables -- on les adapte a nos besoins sans forker un package.
+Les premières recherches s'appuyaient sur des exemples Radix. L'implémentation a
+finalement retenu `@base-ui/react` (ADR-0003). Les composants shadcn sont copiés dans
+le projet (`src/components/ui/`) et restent modifiables sans forker un package.
 
 Organisation :
 
