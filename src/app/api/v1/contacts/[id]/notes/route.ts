@@ -15,7 +15,7 @@ const createBotNoteSchema = z.object({
  * polymorphe (entity_type, entity_id) n'a pas de FK, sans ce check un bot
  * qui hallucine un id recevrait 201 et creerait une note orpheline.
  * author_id = compte robot de la cle (attribution visible dans le fil
- * d'activite existant, cf. specs/done/024-bot-api-contacts-notes.md).
+ * d'activite existant).
  */
 export const POST = withBotAuth(async (request, auth, ctx) => {
   const { id } = await ctx.params;

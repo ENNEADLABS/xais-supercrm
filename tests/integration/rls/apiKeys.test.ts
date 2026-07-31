@@ -8,7 +8,7 @@ import { seedApiKey, createRobotClient, type SeededApiKey } from "../helpers/bot
 // lire/ecrire un contact d'une autre organisation, meme avec un id devine —
 // c'est le test qui compte le plus vu que toute la securite du bot repose sur
 // la RLS + la resolution correcte de l'organisation depuis la cle (pas de
-// bypass service-role sur ce chemin, cf. specs/done/024-bot-api-contacts-notes.md).
+// bypass service-role sur ce chemin).
 //
 // Le compte robot + la ligne api_keys sont seedes directement via le client
 // admin (comme seedTemplate dans contentTemplates.test.ts) plutot que via

@@ -58,8 +58,8 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const method = request.method;
 
-  // API bot externe (cf. specs/done/024-bot-api-contacts-notes.md) : auth par
-  // cle API geree dans la route elle-meme (authenticateBotRequest), jamais
+  // API bot externe : auth par cle API geree dans la route elle-meme
+  // (authenticateBotRequest), jamais
   // par session cookie — ne jamais rediriger vers /login pour ces requetes
   // (elles n'ont et n'auront jamais de cookie de session).
   const isBotApiRoute = pathname.startsWith("/api/v1/");

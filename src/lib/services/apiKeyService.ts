@@ -5,7 +5,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { generateRawKey, hashApiKey, keyPrefixFor } from "@/lib/utils/apiAuth";
 import type { ApiKey, Database } from "@/types/database";
 
-// --- Generation d'une cle API (bot externe) : cf. specs/done/024-bot-api-contacts-notes.md ---
+// --- Generation d'une cle API pour les integrations externes ---
 
 interface GeneratedApiKey {
   rawKey: string;

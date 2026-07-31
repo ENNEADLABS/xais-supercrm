@@ -66,7 +66,7 @@ export const createQuoteLineSchema = z.object({
 
 export const updateQuoteLineSchema = createQuoteLineSchema.omit({ quote_id: true }).partial();
 
-// --- Schemas API bot (cf. specs/todo/025-bot-api-quotes.md) ---
+// --- Schemas de l'API bot pour les devis ---
 // .strict() : une cle inconnue (ex. total_ht pre-calcule) => 400 explicite,
 // jamais un strip silencieux — le CRM n'accepte que les composants de ligne.
 // Divergence volontaire avec createQuoteLineSchema : vat_rate REQUIS (le

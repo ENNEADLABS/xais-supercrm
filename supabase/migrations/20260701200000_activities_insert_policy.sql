@@ -2,8 +2,8 @@
 -- Fix : la table activities n'avait qu'une policy RLS SELECT, aucune policy
 -- INSERT. Sans policy INSERT correspondante, AUCUN insert n'est possible
 -- (RLS active + zero policy = deny par defaut), y compris pour une session
--- humaine normale — bug preexistant, decouvert en testant l'API bot
--- (specs/done/024-bot-api-contacts-notes.md) mais qui bloque activityService.log()
+-- humaine normale — bug preexistant, decouvert en testant l'API bot,
+-- mais qui bloque activityService.log()
 -- pour tout le monde. Meme pattern que contacts_insert/notes_insert.
 -- ============================================================================
 

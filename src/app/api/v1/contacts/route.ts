@@ -7,7 +7,7 @@ import * as contactService from "@/lib/services/contactService";
  * GET /api/v1/contacts?email=... ou ?phone=... — lookup exact, union des
  * matches (OR), email insensible a la casse. 400 si aucun filtre : un 200 []
  * serait indiscernable de "aucun match" et pousserait un bot mal configure
- * a creer des doublons (cf. specs/done/024-bot-api-contacts-notes.md).
+ * a creer des doublons.
  * POST /api/v1/contacts — creation, organizationId toujours resolu depuis
  * la cle API, jamais depuis le body.
  */

@@ -1,6 +1,5 @@
 -- ============================================================================
 -- Content Studio — V1 (Noyau + production)
--- Spec : specs/todo/021-content-studio.md
 --
 -- Approche hybride (ADR collaboration 2026-06-15) :
 --   - On etend l'enum partage entity_type pour reutiliser tasks/documents/

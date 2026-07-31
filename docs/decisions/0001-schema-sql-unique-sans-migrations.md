@@ -21,7 +21,7 @@ de migration vite obsolètes, pour zéro donnée de production à protéger.
 
 **Option B.** `supabase/schema.sql` est la source de vérité unique ; on applique
 via `pnpm run db:reset`. Les types TS sont régénérés depuis ce schéma
-(`pnpm run db:types`). Documenté dans `.claude/rules/database-supabase.md`.
+(`pnpm run db:types`).
 
 ## Conséquences
 
