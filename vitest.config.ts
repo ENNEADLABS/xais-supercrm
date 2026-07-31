@@ -10,6 +10,11 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}", "tests/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
     // Les tests d'intégration ont leur propre config (env node + DB locale).
     exclude: [...configDefaults.exclude, "tests/integration/**"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.d.ts", "src/types/database.generated.ts"],
+    },
   },
   resolve: {
     alias: {
