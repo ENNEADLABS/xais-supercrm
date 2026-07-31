@@ -45,4 +45,21 @@ describe("invoiceLineService.buildInvoiceLineFromProduct", () => {
 
     expect(line.unit).toBe("unite");
   });
+
+  it("rejette une quantite invalide avant l'insertion", () => {
+    expect(() =>
+      buildInvoiceLineFromProduct(
+        "11111111-1111-4111-8111-111111111111",
+        {
+          id: "22222222-2222-4222-8222-222222222222",
+          name: "Audit",
+          unit: "jour",
+          unit_price: 50_000,
+          vat_rate: 2_000,
+        },
+        0,
+        0,
+      ),
+    ).toThrow("La quantite doit etre positive");
+  });
 });

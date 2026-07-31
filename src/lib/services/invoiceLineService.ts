@@ -1,5 +1,9 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { CreateInvoiceLineInput, UpdateInvoiceLineInput } from "@/lib/schemas/invoice";
+import {
+  createInvoiceLineSchema,
+  type CreateInvoiceLineInput,
+  type UpdateInvoiceLineInput,
+} from "@/lib/schemas/invoice";
 import type { Product } from "@/types/database";
 
 type InvoiceLineProduct = Pick<Product, "id" | "name" | "unit" | "unit_price" | "vat_rate">;
@@ -10,7 +14,7 @@ export function buildInvoiceLineFromProduct(
   quantity: number,
   position: number,
 ): CreateInvoiceLineInput {
-  return {
+  return createInvoiceLineSchema.parse({
     invoice_id: invoiceId,
     product_id: product.id,
     description: product.name,
@@ -20,7 +24,7 @@ export function buildInvoiceLineFromProduct(
     discount_percent: 0,
     vat_rate: product.vat_rate,
     position,
-  };
+  });
 }
 
 // --- Helper : verifier que la facture est en brouillon ---
@@ -164,12 +168,14 @@ export async function addFromProduct(
   if (productError) throw productError;
   if (!products || products.length === 0) throw new Error("Produit introuvable");
 
-  const { data: existingLines } = await supabase
+  const { data: existingLines, error: positionError } = await supabase
     .from("invoice_lines")
     .select("position")
     .eq("invoice_id", invoiceId)
     .order("position", { ascending: false })
     .limit(1);
+
+  if (positionError) throw positionError;
 
   const nextPosition = existingLines?.length ? existingLines[0].position + 1 : 0;
   const input = buildInvoiceLineFromProduct(invoiceId, products[0], quantity, nextPosition);
