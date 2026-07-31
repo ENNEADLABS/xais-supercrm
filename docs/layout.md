@@ -106,9 +106,7 @@ Transverses (sans page propre) : `notes`, `tags`, `activities` → `noteService`
 
 | Dossier            | Contenu                                                        |
 | ------------------ | ------------------------------------------------------------- |
-| `.claude/`         | Config Claude Code **scopée projet** : `rules/` (5), `agents/` (crm-domain, crm-reviewer), `commands/` (db-status, test-suite, validate) |
 | `blueprint/`       | Vision produit & domaine (lecture) — le *quoi*               |
 | `docs/decisions/`  | ADR (MADR) — le *pourquoi* daté                              |
-| `specs/`           | Gestion de session : ROADMAP, `done/`, `handoffs/`, `todo/`  |
 | `analysis/`        | Analyses des CRM open-source de référence (lecture)          |
 | `reference-crm/`   | Repos CRM clonés (gitignoré, hors repo)                      |

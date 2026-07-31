@@ -1,6 +1,5 @@
 -- ============================================================================
 -- API keys (bots externes) : contacts + notes/activites uniquement.
--- Cf. specs/done/024-bot-api-contacts-notes.md.
 -- Chaque cle est rattachee a un compte "robot" (auth.users + organization_members
 -- role=member) cree une seule fois a la generation de la cle. La cle brute
 -- n'est jamais stockee (seul key_hash, sha256, l'est) ; robot_user_id sert a

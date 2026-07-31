@@ -1,6 +1,6 @@
 # Content Studio — Guide d'utilisation
 
-> Module de production éditoriale du CRM (spec `specs/done/021-content-studio.md`).
+> Module de production éditoriale intégré au CRM.
 > Chaîne : idées → contenus → scripts → assets → livrables dérivés → publication.
 > Multi-tenant (isolation par organisation), réutilise les modules CRM
 > existants (tâches, documents, activités).

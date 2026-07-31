@@ -1,7 +1,6 @@
 -- ============================================================================
 -- Content Studio — V1.5 (cockpit quotidien de production)
--- Spec  : specs/todo/022-content-studio-v1.5-cockpit.md
--- Plan  : specs/todo/022-content-studio-v1.5-plan.md (Phase 0 — socle donnees)
+-- Phase 0 — socle de donnees du cockpit
 --
 -- Migration additive unique : enum canal + table content_templates + colonnes
 -- de blocage/validation sur content_pieces + canal sur deliverables + fonction

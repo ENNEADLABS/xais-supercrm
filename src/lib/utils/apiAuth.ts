@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { checkRateLimit, BOT_API_LIMIT } from "@/lib/utils/rate-limit";
 import type { Database } from "@/types/database";
 
-// --- API bot externe (contacts + notes) : cf. specs/done/024-bot-api-contacts-notes.md ---
+// --- Authentification de l'API bot externe (contacts + notes) ---
 
 const KEY_PREFIX = "sk_live_";
 const ROBOT_JWT_EXPIRY = "5m";

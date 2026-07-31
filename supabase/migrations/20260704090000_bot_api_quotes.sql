@@ -1,5 +1,5 @@
 -- ============================================================================
--- API bot quotes (cf. specs/todo/025-bot-api-quotes.md) :
+-- API bot quotes :
 -- 1. D1 — un devis/une facture peut viser un contact sans societe :
 --    company_id devient nullable sur quotes ET invoices (le RPC
 --    convert_quote_to_invoice copie company_id du devis signe vers la

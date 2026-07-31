@@ -89,8 +89,7 @@ describe("API bot /api/v1/* (route-level)", () => {
     const jwtSecret = getJwtSecret();
     if (!jwtSecret) {
       throw new Error(
-        "Secret JWT legacy indisponible (stack locale sur signing keys asymetriques ?) — " +
-          "voir Open Question #1 de specs/done/024-bot-api-contacts-notes.md",
+        "Secret JWT legacy indisponible (stack locale sur signing keys asymetriques ?)",
       );
     }
     const { url, anonKey } = getSupabaseEnv();

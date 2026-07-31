@@ -23,8 +23,7 @@ erreur opaque (PGRST116) sur 0 ou >1 ligne, polluant la gestion d'erreurs.
 **Option B.** Chaque service prend `organizationId` en paramètre (issu de
 `getAuthContext`) et l'ajoute à toutes les requêtes, en plus de la RLS. Aucune
 requête n'utilise `.single()` : on récupère un tableau et on vérifie `length`,
-retournant `null` ou levant une erreur métier claire. Documenté dans
-`.claude/rules/backend-nextjs.md` et `database-supabase.md`.
+retournant `null` ou levant une erreur métier claire.
 
 ## Conséquences
 
