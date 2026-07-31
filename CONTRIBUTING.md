@@ -38,5 +38,6 @@ dans [`.github/SECURITY.md`](.github/SECURITY.md), pas une issue publique.
 
 - comportement et structure actuels : code, tests et [`docs/layout.md`](docs/layout.md) ;
 - décisions durables : [`docs/decisions/`](docs/decisions/) ;
+- méthode pour les limites connues : [`docs/improvement-guide.md`](docs/improvement-guide.md) ;
 - schéma de base de données : `supabase/migrations/` ;
 - `blueprint/` et `analysis/` : recherches historiques, non contractuelles.

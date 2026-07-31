@@ -198,7 +198,8 @@ Pattern AAA, factories plutôt que fixtures.
 
 > **Lacunes connues** : pas encore d'E2E. La couverture porte sur tout `src/` mais
 > aucun seuil bloquant n'est imposé : le rapport sert à rendre les zones non testées
-> visibles.
+> visibles. La méthode proposée pour traiter ces limites et les alertes transitives
+> est détaillée dans [`docs/improvement-guide.md`](docs/improvement-guide.md).
 
 ---
 
