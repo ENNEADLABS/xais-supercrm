@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { Task } from "@/types/database";
+import type { Database, Task } from "@/types/database";
 import type { CreateTaskInput, UpdateTaskInput } from "@/lib/schemas/task";
 import * as activityService from "./activityService";
 import { getTask } from "./taskQueries";
@@ -44,7 +44,7 @@ export async function updateTask(organizationId: string, taskId: string, input: 
   const current = await getTask(organizationId, taskId);
   if (!current) throw new Error("Task not found");
 
-  const updateData: Record<string, unknown> = { ...input };
+  const updateData: Database["public"]["Tables"]["tasks"]["Update"] = { ...input };
 
   // Transition VERS done : set completed_at
   if (input.status === "done" && current.status !== "done") {

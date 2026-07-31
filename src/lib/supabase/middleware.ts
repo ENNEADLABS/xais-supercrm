@@ -12,11 +12,17 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet, headers) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options),
+          );
+          // @supabase/ssr >= 0.10 fournit les en-tetes anti-cache a appliquer
+          // avec les cookies rafraichis afin d'eviter une fuite de session via CDN.
+          // Source: https://supabase.com/docs/guides/auth/server-side/advanced-guide#cdn-and-reverse-proxy-caching
+          Object.entries(headers).forEach(([name, value]) =>
+            supabaseResponse.headers.set(name, value),
           );
         },
       },

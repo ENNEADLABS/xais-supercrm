@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { ContentChecklistItem } from "@/types/database";
+import type { ContentChecklistItem, Database } from "@/types/database";
 import type { CreateChecklistItemInput, UpdateChecklistItemInput } from "@/lib/schemas/content";
 
 // --- Checklist d'un contenu ---
@@ -43,7 +43,9 @@ export async function updateChecklistItem(
 ) {
   const supabase = await createServerSupabaseClient();
 
-  const updateData: Record<string, unknown> = { ...input };
+  const updateData: Database["public"]["Tables"]["content_checklist_items"]["Update"] = {
+    ...input,
+  };
   // done_at suit l'etat coche
   if (input.is_done === true) {
     updateData.done_at = new Date().toISOString();

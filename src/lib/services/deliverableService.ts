@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { Deliverable } from "@/types/database";
+import type { Database, Deliverable } from "@/types/database";
 import type { CreateDeliverableInput, UpdateDeliverableInput } from "@/lib/schemas/content";
 import * as activityService from "./activityService";
 
@@ -79,7 +79,7 @@ export async function updateDeliverable(
   const current = await getDeliverable(organizationId, deliverableId);
   if (!current) throw new Error("Deliverable not found");
 
-  const updateData: Record<string, unknown> = { ...input };
+  const updateData: Database["public"]["Tables"]["deliverables"]["Update"] = { ...input };
   if (input.status === "published" && current.status !== "published" && !input.published_at) {
     updateData.published_at = new Date().toISOString();
   }

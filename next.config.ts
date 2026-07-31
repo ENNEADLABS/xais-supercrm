@@ -42,8 +42,8 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
-  org: "xais",
-  project: "xais-supercrm",
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   // Supprime les logs du build Sentry sauf erreurs
   silent: !process.env.CI,
   // Upload source maps pour le debugging en prod

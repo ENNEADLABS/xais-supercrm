@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { ContentTemplate, ContentPiece, Json } from "@/types/database";
+import type { ContentTemplate, ContentPiece, Database, Json } from "@/types/database";
 import type {
   CreateTemplateInput,
   UpdateTemplateInput,
@@ -91,7 +91,7 @@ export async function updateTemplate(
   const supabase = await createServerSupabaseClient();
 
   // Construire le patch en castant uniquement les JSONB presents
-  const patch: Record<string, unknown> = { ...input };
+  const patch: Database["public"]["Tables"]["content_templates"]["Update"] = { ...input };
   if ("script_skeleton" in input) patch.script_skeleton = (input.script_skeleton ?? null) as Json;
   if ("checklist_items" in input) patch.checklist_items = input.checklist_items as Json;
   if ("deliverable_specs" in input) patch.deliverable_specs = input.deliverable_specs as Json;

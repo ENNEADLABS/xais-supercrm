@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import type { Database } from "@/types/database";
 import * as activityService from "./activityService";
 import * as tenantConfigService from "./tenantConfigService";
 
@@ -27,7 +28,7 @@ export async function moveDeal(orgId: string, dealId: string, stage: string, pos
 
   const probability = await tenantConfigService.getProbabilityForStage(orgId, stage);
   const isWon = stage === "won";
-  const payload: Record<string, unknown> = {
+  const payload: Database["public"]["Tables"]["deals"]["Update"] = {
     stage,
     position,
     probability: isWon ? 100 : probability,

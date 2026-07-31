@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import type { ContentPiece } from "@/types/database";
+import type { ContentPiece, Database } from "@/types/database";
 import type {
   CreateContentPieceInput,
   UpdateContentPieceInput,
@@ -80,7 +80,7 @@ export async function updateContentPiece(
   const current = await getContentPiece(organizationId, pieceId);
   if (!current) throw new Error("Content piece not found");
 
-  const updateData: Record<string, unknown> = { ...input };
+  const updateData: Database["public"]["Tables"]["content_pieces"]["Update"] = { ...input };
 
   // Passage en published : horodatage automatique si absent
   if (input.status === "published" && current.status !== "published" && !input.published_at) {
