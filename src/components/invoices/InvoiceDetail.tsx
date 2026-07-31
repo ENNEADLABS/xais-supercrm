@@ -57,8 +57,7 @@ export function InvoiceDetail({ invoiceId }: InvoiceDetailProps) {
   const company = (invoice as any).companies as { id: string; name: string } | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Cast nécessaire : Supabase ne résout pas la relation
   const contact = (invoice as any).contacts as
-    | { id: string; first_name: string; last_name: string }
-    | undefined;
+    { id: string; first_name: string; last_name: string } | undefined;
 
   return (
     <div className="space-y-6">

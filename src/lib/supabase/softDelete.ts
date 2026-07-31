@@ -1,13 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type SoftDeletableTable =
-  | "contacts"
-  | "companies"
-  | "deals"
-  | "products"
-  | "quotes"
-  | "invoices"
-  | "notes";
+  "contacts" | "companies" | "deals" | "products" | "quotes" | "invoices" | "notes";
 
 /** Libelles affichables par type d'entite — safe a importer cote client */
 export const SOFT_DELETABLE_LABELS: Record<SoftDeletableTable, string> = {
