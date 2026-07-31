@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   useAddInvoiceLine,
+  useAddInvoiceLineFromProduct,
   useUpdateInvoiceLine,
   useDeleteInvoiceLine,
 } from "@/lib/hooks/useInvoiceLines";
@@ -29,6 +30,7 @@ export function InvoiceLineEditor({ invoiceId, lines, isEditable }: InvoiceLineE
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const addLine = useAddInvoiceLine();
+  const addFromProduct = useAddInvoiceLineFromProduct();
   const updateLine = useUpdateInvoiceLine();
   const deleteLine = useDeleteInvoiceLine();
 
@@ -51,20 +53,10 @@ export function InvoiceLineEditor({ invoiceId, lines, isEditable }: InvoiceLineE
 
   /** Ajouter depuis le catalogue (on r\u00e9utilise le ProductPicker des devis) */
   function handleProductSelect(productId: string, quantity: number) {
-    // Ajouter via le produit : on cr\u00e9e une ligne avec le product_id
-    addLine.mutate({
+    addFromProduct.mutate({
       invoiceId,
-      input: {
-        invoice_id: invoiceId,
-        product_id: productId,
-        description: `Produit ${productId.slice(0, 8)}`,
-        quantity,
-        unit: "unité",
-        unit_price: 0,
-        discount_percent: 0,
-        vat_rate: 2000,
-        position: lines.length,
-      },
+      productId,
+      quantity,
     });
   }
 

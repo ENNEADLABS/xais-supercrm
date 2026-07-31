@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import {
   fetchInvoiceLines,
   addInvoiceLineAction,
+  addInvoiceLineFromProductAction,
   updateInvoiceLineAction,
   deleteInvoiceLineAction,
   reorderInvoiceLinesAction,
@@ -35,6 +36,32 @@ export function useAddInvoiceLine() {
     },
     onError: () => {
       toast.error("Erreur lors de l'ajout de la ligne");
+    },
+  });
+}
+
+// --- Ajout depuis un produit du catalogue ---
+
+export function useAddInvoiceLineFromProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      invoiceId,
+      productId,
+      quantity,
+    }: {
+      invoiceId: string;
+      productId: string;
+      quantity: number;
+    }) => addInvoiceLineFromProductAction(invoiceId, productId, quantity),
+    onSuccess: (_data, { invoiceId }) => {
+      queryClient.invalidateQueries({ queryKey: ["invoice-lines", invoiceId] });
+      queryClient.invalidateQueries({ queryKey: ["invoices", invoiceId] });
+      toast.success("Produit ajouté à la facture");
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'ajout du produit");
     },
   });
 }
